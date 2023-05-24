@@ -3,24 +3,10 @@ package com.example.tobyspring3.dao;
 import com.example.tobyspring3.domain.User;
 
 import java.sql.*;
-import java.util.Map;
 
-import static java.lang.System.getenv;
+public abstract class UserDao {
 
-public class UserDao {
-
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
-        Map<String, String> env = getenv();                     // Connection 의 분리
-        String dbHost = env.get("DB_HOST");
-        String dbUser = env.get("DB_USER");
-        String dbPassword = env.get("DB_PASSWORD");
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(
-                dbHost, dbUser, dbPassword
-        );
-        return conn;
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
     public void add(User user) throws ClassNotFoundException, SQLException {
         Connection conn = getConnection();
 
@@ -54,14 +40,14 @@ public class UserDao {
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao userDao = new UserDao();
+        UserDao userDao = new NUserDao();
         User user = new User();
-        user.setId("3");
+        user.setId("4");
         user.setName("kyeongrok");
-        user.setPassword("5678");
+        user.setPassword("4321");
         userDao.add(user);
 
-        User selectedUser = userDao.get("3");
+        User selectedUser = userDao.get("4");
         System.out.println(selectedUser.getId());
         System.out.println(selectedUser.getName());
         System.out.println(selectedUser.getPassword());
